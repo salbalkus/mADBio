@@ -1,0 +1,15 @@
+Package: madbio
+Title: A Multi-level Adaptive and Dynamic Biosensor Epidemic Model
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Salvador"
+           family = "Balkus",
+           role = c("aut", "cre"),
+           email = "salbalkus@gmail.com",
+           comment = c(ORCID = "0000-0003-4695-833X"))
+Description: This package implements the m-ADBio epidemic forecasting model. This is a compartmental model based on SEIR that is able to incorporate commuting data and biosensor data to make more accurate predictions. 
+License: `use_mit_license()`
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
