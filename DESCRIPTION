@@ -2,7 +2,7 @@ Package: madbio
 Title: A Multi-level Adaptive and Dynamic Biosensor Epidemic Model
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Salvador"
+    person(given = "Salvador",
            family = "Balkus",
            role = c("aut", "cre"),
            email = "salbalkus@gmail.com",
