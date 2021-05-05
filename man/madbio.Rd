@@ -4,12 +4,14 @@
 \alias{madbio}
 \title{madbio}
 \usage{
-madbio(pop, Rt, pE, pI, C, X0, n)
+madbio(geo_names, pop, Rt, pE, pI, C, X0, n)
 }
 \arguments{
-\item{pop}{a vector containing the population of each geography}
+\item{geo_names}{a vector containing the names of each geography in the order in which they appear in the rest of the data.}
 
-\item{Rt}{a vector containing the effective reproductive rate of each geography}
+\item{pop}{a vector containing the population of each geography. Populations must be ordered by their appearance in "geo_names"}
+
+\item{Rt}{a list of vectors containing the effective reproductive rate of each geography. Each vector of Rt values will be simulated and output as a separate column}
 
 \item{pE}{a numeric representing the latent period, or the average number of days to become infected once exposed}
 
@@ -17,7 +19,7 @@ madbio(pop, Rt, pE, pI, C, X0, n)
 
 \item{C}{a matrix representing the number of commuters who travel between each pair of regions each day. The origin geographies are represented by the row index, and the destinations are represented by the column index.}
 
-\item{X0}{a matrix representing the number of individuals in each compartment for each geography. Each column represents a geography, and each row represents a different compartment.}
+\item{X0}{a matrix representing the number of individuals in each compartment for each geography. Each column represents a geography, and each row represents a different compartment. Alternatively, a list of matrices to be run.}
 
 \item{n}{Number of iterations to run}
 }
@@ -25,5 +27,5 @@ madbio(pop, Rt, pE, pI, C, X0, n)
 A data frame object containing the number of individuals in each compartment at each time step for each geography.
 }
 \description{
-test
+An implementation of the m-ADBio model for epidemic forecasting. This function produces a data frame representing the number of individuals in each compartment (Susceptible, Exposed, Infectious, and Recovered) at each discrete time point. These may be plotted using madbio_plot.
 }

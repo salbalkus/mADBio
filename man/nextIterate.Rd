@@ -21,5 +21,5 @@ nextIterate(pop, C, B, At_const, Xt)
 A data frame object containing the number of individuals in each compartment for each geography at the next time step.
 }
 \description{
-A helper function for the madbio function - usually not used alone. Obtains the next iteration of the m-ADBio model by simulating a single step of the linear dynamical system
+A helper function for the madbio function - usually not used alone. Obtains the next iteration of the m-ADBio model by simulating a single step of the linear dynamical system.
 }
