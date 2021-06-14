@@ -4,7 +4,7 @@
 \alias{get_cumulative_error}
 \title{get_cumulative_error}
 \usage{
-get_cumulative_error(data, time, geo_name)
+get_cumulative_error(data, true_cases, time, geo_name, test_labels)
 }
 \arguments{
 \item{data}{Dataframe output of the "madbio" function merged with a data frame of the true number of cases at each time point}

@@ -7,15 +7,20 @@
 madbio_plot(
   data,
   geo_name,
+  true_cases,
   test_labels,
-  true_cases = FALSE,
-  plot_type = "Cumulative cases"
+  pred_name = "",
+  true_name = "",
+  plot_type = "Cumulative cases",
+  plot_format = "ggplot"
 )
 }
 \arguments{
 \item{data}{a data frame in the same format as that output by the "madbio" function}
 
 \item{geo_name}{the geography that you want to examine.}
+
+\item{true_cases}{a data frame representing the true cases for comparison}
 
 \item{test_labels}{a vector of labels representing the name of each experiment that you are plotting}
 
@@ -27,5 +32,5 @@ madbio_plot(
 A data frame object containing the number of individuals in each compartment for each geography at the next time step.
 }
 \description{
-Takes in the data frame from the madbio function and plots the m-ADBIO forecast.
+Takes in the data frame from the madbio function and plots the data
 }

@@ -1,6 +1,6 @@
 #' @title nextIterate
 #'
-#' @description A helper function for the madbio function - usually not used alone. Obtains the next iteration of the m-ADBio model by simulating a single step of the linear dynamical system
+#' @description A helper function for the madbio function - usually not used alone. Obtains the next iteration of the m-ADBio model by simulating a single step of the linear dynamical system.
 #'
 #' @param pop a vector containing the population of each geography
 #' @param C a matrix representing the number of commuters who travel between each pair of regions each day. The origin geographies are represented by the row index, and the destinations are represented by the column index.
@@ -18,18 +18,16 @@ nextIterate <- function(pop, C, B, At_const, Xt){
   alpha_const <- diag(numCompartments)
   Xt_new <- Xt
   #Iterate through each region
-  for(i in 1:numRegions){
 
     # Calculate proportional commuting matrix describing proportion of commuters spreading virus
-    M <- (C / pop)*Xt[3,]
-    A <- M + t(M)
-    alpha <- A %*% B
-
-    #Calculate At piece by piece to prepare for iteration for the region i
-    alpha_const[1,1] <- alpha[1]
-    At <- At_const %*% alpha_const
-    #Iterate for region i and store in the "new" variable
-    Xt_new[,i] <- (diag(4) + At) %*% Xt[,i]
-  }
-  return(Xt_new)
+    M <- (t(C) / pop)*Xt[3,]*B
+    A <- (M + t(M)) / 2
+  for(i in 1:numRegions){
+      #Calculate At piece by piece to prepare for iteration for the region i
+      alpha_const[1,1] <- sum(A[i,])
+      At <- At_const %*% alpha_const
+      #Iterate for region i and store in the "new" variable
+      Xt_new[,i] <- (diag(numCompartments) + At) %*% Xt[,i]
+    }
+    return(Xt_new)
 }

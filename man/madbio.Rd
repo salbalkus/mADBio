@@ -4,7 +4,7 @@
 \alias{madbio}
 \title{madbio}
 \usage{
-madbio(geo_names, pop, Rt, pE, pI, C, X0, n)
+madbio(geo_names, pop, Rt, pE, pI, C, X0, n, start_date)
 }
 \arguments{
 \item{geo_names}{a vector containing the names of each geography in the order in which they appear in the rest of the data.}
@@ -22,6 +22,8 @@ madbio(geo_names, pop, Rt, pE, pI, C, X0, n)
 \item{X0}{a matrix representing the number of individuals in each compartment for each geography. Each column represents a geography, and each row represents a different compartment. Alternatively, a list of matrices to be run.}
 
 \item{n}{Number of iterations to run}
+
+\item{start_date}{The starting date of the forecast}
 }
 \value{
 A data frame object containing the number of individuals in each compartment at each time step for each geography.
