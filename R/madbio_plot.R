@@ -4,7 +4,7 @@
 #'
 #' @param data a data frame in the same format as that output by the "madbio" function
 #' @param geo_name the geography that you want to examine.
-#' @param true_cases a data frame representing the true cases for comparison
+#' @param true_cases Optional parameter. A data frame representing the true cases for evaluating how well the model has performed
 #' @param test_labels a vector of labels representing the name of each experiment that you are plotting
 #' @param plot_type a string specifying the data to plot. Options: "Cumulative Cases" to plot the Exposed, Infectious, and Recovered compartments (all cases ever); "Infectious Cases" to plot just the Infectious Compartment (active cases)
 #' @param Xt a matrix representing the number of individuals in each compartment for each geography. Each column represents a geography, and each row represents a different compartment.
@@ -55,5 +55,6 @@ madbio_plot <- function(data, geo_name, true_cases, test_labels, pred_name = "",
     }
     p$x$data[[length(test_labels)+1]]$name <- "True Cases"
   }
+
   return(p)
 }

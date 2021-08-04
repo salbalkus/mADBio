@@ -20,7 +20,7 @@ madbio_plot(
 
 \item{geo_name}{the geography that you want to examine.}
 
-\item{true_cases}{a data frame representing the true cases for comparison}
+\item{true_cases}{Optional parameter. A data frame representing the true cases for evaluating how well the model has performed}
 
 \item{test_labels}{a vector of labels representing the name of each experiment that you are plotting}
 

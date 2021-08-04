@@ -1,0 +1,112 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting-Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The **madbio** package implements the m-ADBio epidemic forecasting model. The m-ADBio model, or Multi-Level Adaptive and Dynamic Biosensor model, is a compartmental model. 
+
+Similar to the standard SIR/SEIR model, m-ADBio forecasts the number of Susceptible, Exposed, Infectious, and Recovered individuals at discrete points in time. In contrast to SIR/SEIR, which assumes that the geography being modeled is a closed system, the m-ADBio model incorporates commuters to and from areas outside that being modeled. Furthermore, m-ADBio is able to incorporate assumptions regarding data gathered via biosensors in addition to data gathered via standard testing protocols. This can result in more accurate epidemic forecasts. 
+
+The purpose of this vignette is to teach new users how to forecast the number of expected cases of a virus or disease over time using the **madbio** package. Here, we will walk through the purpose of each function in the package, and how to combine them in a standard analysis script in R to properly generate forecasts. We assume users have a basic knowledge of how to clean and organize a set of data formatted as a dataframe in R.
+
+The first step of using m-ADBio is to generate the initial values for the model. This is done using the *madbio_initial_values* function. Inputs to this function include current case data, the population of the each region incorporated into the model, and the parameters of the infectious disease being modeled, including recovery rate and latent period. If sensor data is being modeled, the expected accuracy of the sensor data can also be incorporated into this prediction.
+
+
+```{r}
+library(madbio)
+
+# Set up sample data for testing each function
+# For this example, this is random data, not a real disease
+# The parameters of the model must be determined by the user
+cases <- data.frame(region1 = c(1, 3, 4, 5, 8, 6, 4, 5), 
+                    region2 = c(10, 15, 16, 17, 20, 18, 4, 9), 
+                    region3 = c(0, 0, 1, 0, 4, 0, 0, 2))
+population <- c(500, 1000, 100)
+recovery_rate <- 2.7
+latent_period <- 1.4
+accuracy <- 1 # We assume perfect accuracy
+
+# Use the initial values function to ca
+initial_values <- madbio_initial_values(cases, 
+                                        population, 
+                                        recovery_rate, 
+                                        latent_period,
+                                        accuracy)
+
+initial_values
+
+
+```
+Once initial values are obtained, the *madbio* function is used to produce predictions for the number of cases in a given region over time. This function requires a commuting matrix describing the number of commuters between each region in the model, and a list of Rt vectors describing the upper and lower confidence intervals of the effective reproductive rate for each region. Other variables are included in the code snippet below. Some variables can be input as a list to allow multiple experiments to be run and output in the same data frame; please see the documentation for more information on this function.
+
+
+```{r}
+
+# Once initial values are calculated, the madbio function can be used to predict the number of cases over time
+
+# Set up parameters to input to model
+C <- matrix(c(500, 200, 5, 100, 1000, 20, 10, 5, 100), nrow = 3) # actual commuting data
+Rt <- list(c(0.9, 0.8, 0.6), c(1.1, 1.2, 1.4)) # Rt upper and lower confidence intervals
+start_date <- as.Date("2021-01-12")
+days_to_forecast <- 10
+region_names <- c("Region 1","Region 2","Region 3")
+
+result <- madbio(region_names, 
+                  population, 
+                  Rt, 
+                  latent_period, 
+                  recovery_rate, 
+                  C, 
+                  initial_values, 
+                  days_to_forecast, 
+                  start_date)
+
+head(result, 5)
+
+```
+
+The **madbio** package also includes functions for plotting the model results and printing signed error to the console. Plotting is done using the *madbio_plot* function, which takes in the results from the *madbio* function along with labels for the different tests that are performed. Plot type specifies whether to plot cumulative cases or just the current number of infectious individuals, while plot format specifies whether to display a ggplot or a plotly plot.
+
+```{r gapminder, echo=FALSE}
+
+# Once initial values are calculated, the madbio function can be used to predict the number of cases over time
+
+# If you run multiple experiments, include multiple labels in this vector
+test_labels <- c("m-ADBio")
+region_to_display <- "Region 1"
+
+# Run the model
+madbio_plot(result, region_to_display, test_labels = test_labels, plot_type = "Cumulative Cases", plot_format = "ggplot")
+
+
+```
+
+
+```{r}
+
+
+# If the true cases are available, the error of the model can be calculated using the function below
+
+true_cases <- data.frame(Time = c(1,2,3,4,5,6,7,8,9,10),
+                         Cases = c(30, 40, 60, 65, 80, 95, 105, 110, 120, 135))
+test_labels <- c("Perfect Sensors, m-ADBio")
+
+get_cumulative_error(result, 
+                     true_cases, 
+                     days_to_forecast, 
+                     region_to_display, 
+                     test_labels = test_labels)
+
+
+```

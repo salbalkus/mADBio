@@ -14,6 +14,7 @@
 madbio_initial_values <- function(cases, pop, pE, pI, delay = 2, acc = 1){
   LP <- round(pE)
   IP <- round(pI)
+  num_regions <- length(pop)
 
   #This function produces the initial values for the SEIR simulation of a given state
   #Format the data frame of cases and the cumulative cases
@@ -22,7 +23,7 @@ madbio_initial_values <- function(cases, pop, pE, pI, delay = 2, acc = 1){
 
   #Calculate the population of each compartment by summing active cases as specified by the latent and infectious periods
   E <- as.vector(colSums(cases[(nrow(cases)- LP + 1):(nrow(cases)),]))
-  I <- as.vector(colSums(cases[(nrow(cases)- LP - IP + 1):(nrow(cases)- LP -1),]))
+  I <- as.vector(colSums(cases[(nrow(cases)- LP - IP + 1):(nrow(cases) - LP -1),]))
   R <- as.vector(total_cases[nrow(total_cases),] - E - I)
 
   #Correct for the specified accuracy
@@ -33,7 +34,7 @@ madbio_initial_values <- function(cases, pop, pE, pI, delay = 2, acc = 1){
   #Calculate S as the remaining non-infected population
   S <- as.vector(pop - E - I - R)
 
-  output <- matrix(unlist(t(matrix(c(S, E, I, R), nrow = 3))), nrow = 4)
+  output <- matrix(unlist(t(matrix(c(S, E, I, R), nrow = num_regions))), nrow = 4)
 
   return(output)
 }
